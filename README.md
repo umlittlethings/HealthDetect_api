@@ -1,3 +1,7 @@
+# Check the docs
+
+framinghamdocs.netlify.app
+
 # 🩺 Framingham Risk Score API
 
 API sederhana untuk menghitung risiko penyakit jantung menggunakan metode **Framingham Risk Score**. Dibangun menggunakan **Node.js + Express**, cocok untuk integrasi dengan aplikasi Android/Kotlin atau perangkat wearable seperti smartwatch.
