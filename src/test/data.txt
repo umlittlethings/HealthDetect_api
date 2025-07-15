@@ -1,3 +1,0 @@
-curl -X POST http://localhost:5000/api/framingham \
--H "Content-Type: application/json" \
--d '{"age": 45, "gender": "male", "totalCholesterol": 210, "hdlCholesterol": 50, "systolicBP": 130, "isSmoker": true, "isDiabetic": false}'
