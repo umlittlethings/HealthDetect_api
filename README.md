@@ -1,6 +1,6 @@
 # Check the docs
 
-framinghamdocs.netlify.app
+[framinghamdocs](https://framinghamdocs.netlify.app/)
 
 # 🩺 Framingham Risk Score API
 
