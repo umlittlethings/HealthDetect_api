@@ -1,58 +1,57 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('FraminghamData', {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4, // Generate UUID automatically
         primaryKey: true,
-        type: Sequelize.INTEGER
       },
       user: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       age: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       gender: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       totalCholesterol: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       hdlCholesterol: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       systolicBP: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       isSmoker: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       isDiabetic: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       riskScore: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
       },
       riskLevel: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       message: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('FraminghamData');
-  }
+  },
 };
