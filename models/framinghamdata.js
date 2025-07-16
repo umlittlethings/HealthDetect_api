@@ -21,7 +21,12 @@ module.exports = (sequelize) => {
       isDiabetic: DataTypes.BOOLEAN,
       riskScore: DataTypes.FLOAT,
       riskLevel: DataTypes.STRING,
+      riskPercentage: DataTypes.STRING, 
       message: DataTypes.STRING,
+      avgHeartRate: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
     },
     {
       sequelize,

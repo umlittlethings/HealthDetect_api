@@ -10,7 +10,11 @@ const calculateFraminghamHandler = async (req, res) => {
     await FraminghamData.create({
       user,
       ...data,
-      ...result,
+      avgHeartRate: result.avgHeartRate, 
+      riskScore: result.riskScore,
+      riskLevel: result.riskLevel,
+      riskPercentage: result.riskPercentage,
+      message: result.message,
     });
 
     res.json({ user, ...result }); // Include user in the response

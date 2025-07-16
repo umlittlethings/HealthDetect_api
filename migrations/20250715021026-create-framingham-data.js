@@ -38,6 +38,13 @@ module.exports = {
       riskLevel: {
         type: Sequelize.STRING,
       },
+      riskPercentage: {
+        type: Sequelize.STRING, 
+      },
+      avgHeartRate: {
+        type: Sequelize.FLOAT,
+        allowNull: true,
+      },
       message: {
         type: Sequelize.STRING,
       },
