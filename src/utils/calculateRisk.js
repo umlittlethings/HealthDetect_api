@@ -6,10 +6,25 @@ const framinghamFormula = ({
 }) => {
   let score = 0;
 
-  // Calculate average heart rate (tetap seperti sebelumnya)
+  // Calculate average heart rate dan scoring
   let avgHeartRate = null;
   if (Array.isArray(restingHeartRates) && restingHeartRates.length > 0) {
     avgHeartRate = restingHeartRates.reduce((a, b) => a + b, 0) / restingHeartRates.length;
+    
+    // Heart Rate scoring berdasarkan PDF interpretasi
+    if (avgHeartRate < 60) {
+      // Bradikardia - bisa normal pada atlet, tapi bisa juga tanda masalah
+      score += 1; // risiko sedang
+    } else if (avgHeartRate >= 60 && avgHeartRate <= 100) {
+      // Normal - tidak ada penambahan score
+      score += 0;
+    } else if (avgHeartRate > 100 && avgHeartRate <= 120) {
+      // Takikardia ringan
+      score += 2;
+    } else if (avgHeartRate > 120) {
+      // Takikardia sedang-berat
+      score += 3;
+    }
   }
 
   // Age scoring berdasarkan PDF

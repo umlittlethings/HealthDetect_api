@@ -3,7 +3,6 @@ const { framinghamFormula } = require('../utils/calculateRisk');
 const calculateFraminghamScore = (data) => {
   const { score, avgHeartRate } = framinghamFormula(data);
 
-  // Risk level classification berdasarkan PDF
   let riskLevel = "low";
   let riskPercentage = "≤5%";
   
