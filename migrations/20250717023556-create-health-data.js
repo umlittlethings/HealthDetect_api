@@ -1,52 +1,49 @@
 'use strict';
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('FraminghamData', {
+    await queryInterface.createTable('HealthData', {
       id: {
         allowNull: false,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4, // Generate UUID automatically
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      user: {
-        type: Sequelize.STRING,
-      },
-      age: {
-        type: Sequelize.INTEGER,
-      },
-      gender: {
-        type: Sequelize.STRING,
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       totalCholesterol: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       hdlCholesterol: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       systolicBP: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       isSmoker: {
         type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       isDiabetic: {
         type: Sequelize.BOOLEAN,
-      },
-      riskScore: {
-        type: Sequelize.FLOAT,
-      },
-      riskLevel: {
-        type: Sequelize.STRING,
-      },
-      riskPercentage: {
-        type: Sequelize.STRING, 
+        allowNull: false,
+        defaultValue: false,
       },
       avgHeartRate: {
         type: Sequelize.FLOAT,
         allowNull: true,
-      },
-      message: {
-        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -58,7 +55,8 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('FraminghamData');
+    await queryInterface.dropTable('HealthData');
   },
 };
