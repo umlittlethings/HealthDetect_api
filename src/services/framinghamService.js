@@ -18,7 +18,7 @@ const calculateFraminghamScore = (data) => {
   }
 
   return {
-    riskScore: parseFloat(score.toFixed(2)),
+    riskScore: parseFloat(Math.max(0, score).toFixed(2)), 
     riskLevel,
     riskPercentage,
     avgHeartRate: avgHeartRate ? parseFloat(avgHeartRate.toFixed(2)) : null,

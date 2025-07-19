@@ -6,28 +6,22 @@ const framinghamFormula = ({
 }) => {
   let score = 0;
 
-  // Calculate average heart rate dan scoring
   let avgHeartRate = null;
   if (Array.isArray(restingHeartRates) && restingHeartRates.length > 0) {
     avgHeartRate = restingHeartRates.reduce((a, b) => a + b, 0) / restingHeartRates.length;
     
-    // Heart Rate scoring berdasarkan PDF interpretasi
     if (avgHeartRate < 60) {
-      // Bradikardia - bisa normal pada atlet, tapi bisa juga tanda masalah
-      score += 1; // risiko sedang
+      score += 1; 
     } else if (avgHeartRate >= 60 && avgHeartRate <= 100) {
-      // Normal - tidak ada penambahan score
       score += 0;
     } else if (avgHeartRate > 100 && avgHeartRate <= 120) {
-      // Takikardia ringan
       score += 2;
     } else if (avgHeartRate > 120) {
-      // Takikardia sedang-berat
       score += 3;
     }
   }
 
-  // Age scoring berdasarkan PDF
+
   if (age >= 20 && age <= 34) {
     score += gender === "male" ? -9 : -7;
   } else if (age >= 35 && age <= 39) {
@@ -44,11 +38,10 @@ const framinghamFormula = ({
     score += 10;
   }
 
-  // Total Cholesterol scoring berdasarkan PDF
   if (totalCholesterol < 160) {
     score += 0;
   } else if (totalCholesterol >= 160 && totalCholesterol <= 199) {
-    score += 4; // sama untuk pria dan wanita
+    score += 4; 
   } else if (totalCholesterol >= 200 && totalCholesterol <= 239) {
     score += gender === "male" ? 7 : 8;
   } else if (totalCholesterol >= 240 && totalCholesterol <= 279) {
@@ -57,7 +50,6 @@ const framinghamFormula = ({
     score += gender === "male" ? 11 : 13;
   }
 
-  // HDL Cholesterol scoring berdasarkan PDF
   if (hdlCholesterol >= 60) {
     score += -1;
   } else if (hdlCholesterol >= 50 && hdlCholesterol <= 59) {
@@ -68,8 +60,6 @@ const framinghamFormula = ({
     score += 2;
   }
 
-  // Systolic Blood Pressure scoring berdasarkan PDF
-  // Asumsi: tanpa pengobatan (bisa disesuaikan dengan menambah parameter isOnMedication)
   if (systolicBP < 120) {
     score += 0;
   } else if (systolicBP >= 120 && systolicBP <= 129) {
@@ -77,15 +67,13 @@ const framinghamFormula = ({
   } else if (systolicBP >= 130 && systolicBP <= 139) {
     score += 2;
   } else if (systolicBP >= 140) {
-    score += 3; // tanpa pengobatan
+    score += 3; 
   }
 
-  // Smoking scoring berdasarkan PDF
   if (isSmoker) {
     score += gender === "male" ? 4 : 3;
   }
 
-  // Diabetes scoring berdasarkan PDF
   if (isDiabetic) {
     score += 3;
   }

@@ -5,13 +5,13 @@ const calculateFraminghamHandler = async (req, res) => {
   try {
     const { name, age, gender, totalCholesterol, hdlCholesterol, systolicBP, isSmoker, isDiabetic, restingHeartRates } = req.body;
 
-    // Hitung skor
+
     const result = calculateFraminghamScore({ age, gender, totalCholesterol, hdlCholesterol, systolicBP, isSmoker, isDiabetic, restingHeartRates });
 
-    // Simpan ke tabel Users
+
     const user = await User.create({ name, age, gender });
 
-    // Simpan ke tabel HealthData
+
     const healthData = await HealthData.create({
       userId: user.id,
       totalCholesterol,
@@ -22,7 +22,7 @@ const calculateFraminghamHandler = async (req, res) => {
       avgHeartRate: result.avgHeartRate,
     });
 
-    // Simpan ke tabel RiskAssessments
+
     const riskAssessment = await RiskAssessment.create({
       userId: user.id,
       healthDataId: healthData.id,
