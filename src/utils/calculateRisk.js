@@ -2,26 +2,31 @@ const framinghamFormula = ({
   age, gender, totalCholesterol,
   hdlCholesterol, systolicBP,
   isSmoker, isDiabetic,
-  restingHeartRates 
+  restingHeartRates
 }) => {
   let score = 0;
+  let flags = [];
 
   let avgHeartRate = null;
   if (Array.isArray(restingHeartRates) && restingHeartRates.length > 0) {
     avgHeartRate = restingHeartRates.reduce((a, b) => a + b, 0) / restingHeartRates.length;
-    
-    if (avgHeartRate < 60) {
-      score += 1; 
-    } else if (avgHeartRate >= 60 && avgHeartRate <= 100) {
-      score += 0;
-    } else if (avgHeartRate > 100 && avgHeartRate <= 120) {
-      score += 2;
-    } else if (avgHeartRate > 120) {
-      score += 3;
+
+    if (avgHeartRate > 120) {
+      score += 2; // Takikardia berat
+      flags.push("HR > 120 bpm: takikardia berat, evaluasi lanjut disarankan");
+    } else if (avgHeartRate > 100 && systolicBP >= 140) {
+      score += 2; // Takikardia + hipertensi
+      flags.push("HR > 100 & SBP ≥ 140: potensi tekanan kardiovaskular tinggi");
+    } else if (avgHeartRate > 100 && systolicBP >= 130) {
+      score += 1; // Takikardia ringan + prehipertensi
+      flags.push("HR > 100 & SBP ≥ 130: takikardia ringan dengan prehipertensi");
+    } else if (avgHeartRate < 60 && systolicBP < 100) {
+      score += 1; // Bradikardia + hipotensi
+      flags.push("HR < 60 & SBP < 100: bradikardia dengan tekanan darah rendah");
     }
   }
 
-
+  // Skor usia
   if (age >= 20 && age <= 34) {
     score += gender === "male" ? -9 : -7;
   } else if (age >= 35 && age <= 39) {
@@ -38,47 +43,65 @@ const framinghamFormula = ({
     score += 10;
   }
 
+  // Skor total kolesterol
   if (totalCholesterol < 160) {
     score += 0;
-  } else if (totalCholesterol >= 160 && totalCholesterol <= 199) {
-    score += 4; 
-  } else if (totalCholesterol >= 200 && totalCholesterol <= 239) {
+  } else if (totalCholesterol <= 199) {
+    score += 4;
+  } else if (totalCholesterol <= 239) {
     score += gender === "male" ? 7 : 8;
-  } else if (totalCholesterol >= 240 && totalCholesterol <= 279) {
+  } else if (totalCholesterol <= 279) {
     score += gender === "male" ? 9 : 11;
-  } else if (totalCholesterol >= 280) {
+  } else {
     score += gender === "male" ? 11 : 13;
   }
 
+  // Skor HDL kolesterol
   if (hdlCholesterol >= 60) {
     score += -1;
-  } else if (hdlCholesterol >= 50 && hdlCholesterol <= 59) {
+  } else if (hdlCholesterol >= 50) {
     score += 0;
-  } else if (hdlCholesterol >= 40 && hdlCholesterol <= 49) {
+  } else if (hdlCholesterol >= 40) {
     score += 1;
-  } else if (hdlCholesterol < 40) {
+  } else {
     score += 2;
   }
 
+  // Skor tekanan darah sistolik (tanpa pengobatan)
   if (systolicBP < 120) {
     score += 0;
-  } else if (systolicBP >= 120 && systolicBP <= 129) {
+  } else if (systolicBP <= 129) {
     score += 1;
-  } else if (systolicBP >= 130 && systolicBP <= 139) {
+  } else if (systolicBP <= 139) {
     score += 2;
-  } else if (systolicBP >= 140) {
-    score += 3; 
+  } else {
+    score += 3; // diasumsikan tanpa pengobatan, +4 jika dengan pengobatan
   }
 
+  // Skor merokok
   if (isSmoker) {
     score += gender === "male" ? 4 : 3;
   }
 
+  // Skor diabetes
   if (isDiabetic) {
     score += 3;
   }
 
-  return { score, avgHeartRate };
+  // Estimasi risiko berdasarkan total skor
+  let riskCategory = "Rendah";
+  if (score >= 20) {
+    riskCategory = "Tinggi";
+  } else if (score >= 10) {
+    riskCategory = "Sedang";
+  }
+
+  return {
+    score,
+    avgHeartRate: avgHeartRate ?? null,
+    riskCategory,
+    flags,
+  };
 };
 
 module.exports = { framinghamFormula };

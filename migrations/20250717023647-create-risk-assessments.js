@@ -29,19 +29,31 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      riskScore: {
+      framinghamScore: {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
-      riskLevel: {
+      framinghamLevel: {
         type: Sequelize.ENUM('low', 'medium', 'high'),
         allowNull: false,
       },
-      riskPercentage: {
+      framinghamPercentage: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      message: {
+      ascvdScore: {
+        type: Sequelize.FLOAT,
+        allowNull: true,
+      },
+      ascvdLevel: {
+        type: Sequelize.ENUM('low', 'medium', 'high'),
+        allowNull: true,
+      },
+      ascvdMessage: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      framinghamMessage: {
         type: Sequelize.TEXT,
         allowNull: true,
       },

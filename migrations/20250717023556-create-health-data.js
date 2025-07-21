@@ -19,6 +19,10 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      race: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       totalCholesterol: {
         type: Sequelize.INTEGER,
         allowNull: false,

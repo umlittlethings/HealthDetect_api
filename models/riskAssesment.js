@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      riskScore: {
+      framinghamScore: {
         type: DataTypes.FLOAT,
         allowNull: false,
         validate: {
@@ -41,15 +41,31 @@ module.exports = (sequelize) => {
           max: 100,
         },
       },
-      riskLevel: {
+      framinghamLevel: {
         type: DataTypes.ENUM('low', 'medium', 'high'),
         allowNull: false,
       },
-      riskPercentage: {
+      framinghamPercentage: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      message: {
+      ascvdScore: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+        validate: {
+          min: 0,
+          max: 100,
+        },
+      },
+      ascvdLevel: {
+        type: DataTypes.ENUM('low', 'medium', 'high'),
+        allowNull: true,
+      },
+      ascvdMessage: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      framinghamMessage: {
         type: DataTypes.TEXT,
         allowNull: true,
       },

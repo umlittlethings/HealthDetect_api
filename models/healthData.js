@@ -72,6 +72,10 @@ module.exports = (sequelize) => {
           max: 200,
         },
       },
+      race: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,
