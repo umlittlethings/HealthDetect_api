@@ -9,7 +9,9 @@ app.use(cors());
 app.use(express.json());
 
 const framinghamRoute = require('./routes/framinghan');
+const ascvdRoute = require('./routes/ascvd');
 app.use('/api/framingham', framinghamRoute);
+app.use('/api/ascvd', ascvdRoute);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
