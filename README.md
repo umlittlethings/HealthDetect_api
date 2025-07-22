@@ -2,10 +2,6 @@
 
 API untuk menghitung risiko penyakit jantung (**Framingham** & **ASCVD**) dan kalkulasi status gizi/energi (**Nutrition**) berbasis Node.js + Express.
 
-# Check the docs
-
-[framinghamdocs](https://framinghamdocs.netlify.app/)
-
 ---
 
 ## 🚀 Features
@@ -61,7 +57,7 @@ src/
 
 ## 📖 Documentation
 
-Lihat dokumentasi endpoint di folder `documentation/` atau [framinghamdocs](https://framinghamdocs.netlify.app/)
+Lihat dokumentasi endpoint di [framinghamdocs](https://framinghamdocs.netlify.app/)
 
 ---
 
