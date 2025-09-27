@@ -1,0 +1,88 @@
+Form Data Diri Subjek Penelitian,,,,,,,,,,,,,,,,,,
+No,Nama,Instansi,Usia (tahun),Jenis Kelamin,Ras,Riwayat Perokok,Data Diri,,,Kategori dan Riwayat Penyakit,,,,Cek Lab,,,,
+,,,,,,,Tinggi Badan (m),Berat Badan (kg),IMT (kg/m2),Berat Badan,Diabetes Melitus,Penggunaan Obat Antihipertensi,Penggunaan Obat Antikolesterol,Tekanan Darah (mmHg),Kolesterol Total ,LDL,HDL,Trigliserida
+1,Febri Andita Alfarisky,POLTEKKES PIM,20,Laki-laki,Sawo Matang,Tidak,1.74,102.00,33.6901,Obesitas kelas 1,Tidak,-,-,140/90,152,74,"33,2",163
+2,Sabrina Azzahro,UIN Maulana Malik Ibrahim Malang,22,Perempuan,Putih,Tidak,1.52,61.55,26.6404,Berat badan lebih,Tidak,-,-,,,,,
+3,Redita Ayunda,POLITEKKES PIM,20,Perempuan,Sawo Matang,Tidak,1.53,114.00,48.6992,Obesitas kelas 2,Tidak,-,-,140/90,217,115,"37,8",184
+4,Ahmad Zulfahmi Muwafiq Billah,Universitas Negeri Malang,24,Laki-laki,Sawo Matang,Ya,1.69,75.00,26.2596,Berat badan lebih,Tidak,-,-,120/80,174,90,"41,0",112
+5,Selly Septianing Putri,POLTEKKES PIM,21,Perempuan,Sawo Matang,Tidak,1.59,56.00,22.1510,Normal (BB Ideal),Tidak,-,-,120/80,184,143,"37,2",81
+6,Diaz Windy Agustin,POLTEKKES PIM,20,Perempuan,Sawo Matang,Tidak,1.55,48.00,19.9792,Normal (BB Ideal),Tidak,-,-,90/60,159,86,"46,1",47
+7,Raka Ananta Aurora,POLTEKKES PIM,20,Laki-laki,Sawo Matang,Tidak,1.76,106.00,34.2200,Obesitas kelas 1,Tidak,-,-,140/90,228,121,"38,2",96
+9,Wan Annziza Fara Adhe Lesmana,POLTEKKES PIM ,20,Perempuan,Putih,Tidak,1.54,59.00,24.8777,Normal (BB Ideal),Tidak,-,-,90/60,268,135,"69,2",288
+10,M. Ainur Rahman,Universitas Waskita Dharma,19,Laki-laki,Sawo Matang,Ya,1.74,54.00,17.8359,Kurus (Underweight),Tidak,-,-,120/80,130,82,"32,1",54
+11,Ny. Eti Susilowati,Bumiayu,42,Perempuan,,Tidak,1.53,57.00,24.3496,Normal (BB Ideal),Tidak,-,-,110/70,157,78,"44,1",107
+12,Ny. Ita Novita,Bumiayu,47,Perempuan,Sawo Matang,Tidak,1.52,55.00,23.8054,Normal (BB Ideal),Tidak,-,-,140/90,341,191,63,351
+13,Ny. Endang Pramonosasi,Bumiayu,54,Perempuan,Sawo Matang,Tidak,1.50,49.00,21.7778,Normal (BB Ideal),Tidak,-,-,120/80,164,74,59,90
+14,Ny. Ari Sulistiyowati,Bumiayu,44,Perempuan,Sawo Matang,Tidak,1.55,84.00,34.9636,Obesitas kelas 1,Tidak,-,-,120/80,166,88,"28,7",166
+15,Ny. Gladis Febriani,Bumiayu,,Perempuan,Sawo Matang,Tidak,1.52,78.00,33.7604,Kurus (Underweight),Tidak,-,-,120/80,198,101,"40,2",95
+16,Ny. Billah Safitri,Bumiayu,22,Perempuan,Sawo Matang,Tidak,1.50,53.00,23.5556,Normal (BB Ideal),Tidak,-,-,90/60,115,56,40,45
+17,Ny. Woro Sriwiyanti,Bumiayu,42,Perempuan,Sawo Matang,Tidak,1.55,82.00,34.1311,Obesitas kelas 1,Tidak,-,-,130/90,217,122,"35,6",121
+18,Ny. Pudji Astuti,Bumiayu,47,Perempuan,Sawo Matang,Tidak,1.60,86.00,33.5938,Obesitas kelas 1,Tidak,-,-,100/70,189,107,"26,9",184
+19,Ny. Tri Prihatiningsih,Bumiayu,56,Perempuan,Sawo Matang,Tidak,1.53,65.00,27.7671,Berat badan lebih,Tidak,-,-,140/90,192,104,"42,1",82
+20,Ny. Sinatriyan Syahfitri,Bumiayu,27,Perempuan,Sawo Matang,Tidak,1.57,76.00,30.8329,Berat badan lebih,Tidak,-,-,100/70,192,119,"30,2",204
+21,Ny. Siti Muslimah,Bumiayu,59,Perempuan,Sawo Matang,Tidak,1.50,73.00,32.4444,Obesitas kelas 1,Tidak,-,-,140/90,209,118,"35,4",128
+22,Ny. Lenny Murdiyana,Bumiayu,43,Perempuan,Sawo Matang,Tidak,1.47,43.00,19.8991,Normal (BB Ideal),Tidak,-,-,170/100,314,185,"37,8",219
+23,Ny. Nunu Herawati,Bumiayu,53,Perempuan,Sawo Matang,Tidak,1.63,65.00,24.4646,Normal (BB Ideal),Tidak,-,-,90/60,209,99,"53,4",86
+24,Ny. Yuliati Ningsih,Bumiayu,50,Perempuan,Sawo Matang,Tidak,1.49,61.00,27.4762,Normal (BB Ideal),Tidak,-,-,130/90,175,79,"53,1",170
+25,Ny. Siti Romlah,Bumiayu,42,Perempuan,Sawo Matang,Tidak,1.61,68.00,26.2336,Normal (BB Ideal),Tidak,-,-,110/70,194,105,"38,5",99
+26,Ny. Meisyaroh Rofidah,Bumiayu,55,Perempuan,Sawo Matang,Tidak,1.56,66,27.90,Berat badan lebih,Tidak,-,-,110/70,208,105,"47,5",103
+27,Ny. Isdiati,Bumiayu,54,Perempuan,Sawo Matang,Tidak,1.53,80,34.17,Obesitas kelas 1,Tidak,-,-,160/100,215,117,"42,1",193
+28,Iwan Setia,POLTEKKES PIM,,Laki-laki,Sawo Matang,Ya,1.68,58,20.5499,Normal (BB Ideal),Tidak,-,Simvastatin 10 mg,,,,,
+29,Maulana Muhammad Fikri,UIN Maulana Malik Ibrahim Malang,23,Laki-laki,Sawo Matang,Ya,1.71,89.00,30.4367,Obesitas kelas 1,Tidak,-,-,110/70,214,120,"32,1",258
+30,Mayang Deyo Sandra,POLTEKKES PIM,,Perempuan,Sawo Matang,Tidak,1.52,48,"20,775.0000",Normal (BB Ideal),Tidak,-,-,,,,,
+31,Ishthifa Annisa Aulia,POLTEKKES PIM,23,Perempuan,Sawo Matang,Tidak,1.53,43.55,18.6040,Normal (BB Ideal),Tidak,-,Simvastatin 20 mg,,,,,
+32,Heri Setyoningsih,,,Perempuan,Putih,Tidak,,,,,Tidak,Amlodipine 5 mg,-,,,,,
+33,Erna Susanti,,50,Perempuan,Sawo Matang,Tidak,,,,,,,,,,,,
+34,Ny. Dina Adi Hariswanti,Klinik ,43,Perempuan,,,,,,,Ya,,,,214,144,36,137
+35,Ny. Djumira,Klinik ,67,Perempuan,,,,,,,Ya,,,,219,121,45,181
+36,Ny. Hanipah,Klinik ,60,Perempuan,,,,,,,Ya,,,,188,91,26,385
+37,Ny. Hidayati,Klinik ,60,Perempuan,,,,,,,Ya,,,,248,171,38,191
+38,Ny. Kasifah Kasmin Hajir,Klinik ,61,Perempuan,,,,,,,Ya,,,,271,163,57,77
+39,Ny. Masi Susilowati,Klinik ,50,Perempuan,,,,,,,Ya,,,,231,146,36,175
+40,Ny. Mimin Purwati,Klinik ,38,Perempuan,,,,,,,Tidak,,,,257,174,40,164
+41,Ny. Mujiati,Klinik ,48,Perempuan,,,,,,,Ya,,,,232,143,51,75
+42,Ny. Mulyatiningsih,Klinik ,55,Perempuan,,,,,,,Ya,,,,217,129,39,139
+43,Ny. Murnami,Klinik ,62,Perempuan,,,,,,,Tidak,,,,220,137,41,129
+44,Ny. Remi,Klinik ,65,Perempuan,,,,,,,Ya,,,,280,177,40,224
+45,Ny. Siti Sulasmi,Klinik ,67,Perempuan,,,,,,,Ya,,,,279,134,45,312
+46,Ny. Sri Muryati,Klinik ,50,Perempuan,,,,,,,Tidak,,,,268,191,35,116
+47,Ny. Sri Wikani,Klinik ,77,Perempuan,,,,,,,Tidak,,,,314,201,51,178
+48,Ny. Sumarlin,Klinik ,51,Perempuan,,,,,,,Tidak,,,,220,132,44,80
+49,Ny. Sunu Panjawati,Klinik ,56,Perempuan,,,,,,,Ya,,,,254,171,40,156
+50,Ny. Supartatik,Klinik ,61,Perempuan,,,,,,,Ya,,,,257,143,65,99
+51,Ny. Sutik,Klinik ,71,Perempuan,,,,,,,Tidak,,,,253,169,47,67
+52,Ny. Suwanti,Klinik ,56,Perempuan,,,,,,,Ya,,,,209,112,42,211
+53,Ny. Uripah,Klinik ,49,Perempuan,,,,,,,Ya,,,,244,150,37,168
+54,Ny. Warsiningsih,Klinik ,59,Perempuan,,,,,,,Ya,,,,255,168,44,124
+55,Tn. Andri,Klinik ,64,Laki-laki,,,,,,,Ya,,,,234,109,62,123
+56,Tn. Buasan,Klinik ,50,Laki-laki,,,,,,,Ya,,,,274,120,31,704
+57,Tn. Hary Didik Kurniawam,Klinik ,41,Laki-laki,,,,,,,Ya,,,,271,163,38,289
+58,Tn. Kusyanto,Klinik ,64,Laki-laki,,,,,,,Ya,,,,220,130,41,203
+59,Tn. Muryanto,Klinik ,66,Laki-laki,,,,,,,Ya,,,,217,131,38,169
+60,Tn. Ngari,Klinik ,63,Laki-laki,,,,,,,Tidak,,,,202,121,37,120
+61,Tn. Samian,Klinik ,70,Laki-laki,,,,,,,Tidak,,,,286,176,47,218
+62,Tn. Sugito,Klinik ,56,Laki-laki,,,,,,,Ya,,,,107,30,33,119
+63,Tn. Sukadi,Klinik ,55,Laki-laki,,,,,,,Ya,,,,200,95,35,366
+64,Tn. Sumarto,Klinik ,55,Laki-laki,,,,,,,Ya,,,,162,73,31,387
+65,Tn. Sunarno,Klinik ,62,Laki-laki,,,,,,,Ya,,,,203,123,32,159
+66,Tn. Supriyaji,Klinik ,61,Laki-laki,,,,,,,Ya,,,,220,133,43,142
+67,Tn. Tri Siswantoro,Klinik ,62,Laki-laki,,,,,,,Ya,,,,345,234,27,378
+68,Ny. Agustin Indrawati,Klinik ,48,Perempuan,,,,,,,Tidak,,,,287,174,56,183
+69,Ny. Agustiningsih,Klinik ,59,Perempuan,,,,,,,Ya,,,,208,114,50,94
+70,Rizky,,,Laki-laki,,,,,,,Tidak,,,,,,,
+71,Vicky,,,Laki-laki,,,,,,,,,,,,,,
+72,Fitri Eka,,,Perempuan,,,,,,,,,,,,,,
+73,,,,Perempuan,,,,,,,,,,,,,,
+74,,,,Laki-laki,,,,,,,,,,,,,,
+75,,,,Laki-laki,,,,,,,,,,,,,,
+76,,,,Laki-laki,,,,,,,,,,,,,,
+77,,,,,,,,,,,,,,,,,,
+78,,,,,,,,,,,,,,,,,,
+79,,,,,,,,,,,,,,,,,,
+80,,,,,,,,,,,,,,,,,,
+81,,,,,,,,,,,,,,,,,,
+82,,,,,,,,,,,,,,,,,,
+83,,,,,,,,,,,,,,,,,,
+84,,,,,,,,,,,,,,,,,,
+85,,,,,,,,,,,,,,,,,,
+86,,,,,,,,,,,,,,,,,,

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthDetect - Risk Assessment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              teal: {
+                50: "#f0fdfa",
+                100: "#ccfbf1",
+                200: "#99f6e4",
+                300: "#5eead4",
+                400: "#2dd4bf",
+                500: "#14b8a6",
+                600: "#0d9488",
+                700: "#0f766e",
+                800: "#115e59",
+                900: "#134e4a",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <script src="/js/upload.js" defer></script>
+    <script>
+      let currentPage = 1;
+      const pageSize = 10;
+      let usersData = [];
+
+      function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        return d.toLocaleString("id-ID", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      function renderTable(page = 1) {
+        const tbody = document.querySelector("#userTable tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        const start = (page - 1) * pageSize;
+        const end = start + pageSize;
+        const pageData = usersData.slice(start, end);
+        pageData.forEach((user, idx) => {
+          const risk = user.riskAssessments && user.riskAssessments[0];
+          const nutrition = user.nutritionData && user.nutritionData[0];
+          const nutritionResult = nutrition && nutrition.result;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+        <td>${start + idx + 1}</td>
+        <td>${user.id}</td>
+        <td>${user.name}</td>
+        <td>${user.age}</td>
+        <td>${user.gender}</td>
+        <td>${formatDate(user.createdAt)}</td>
+        <td>${risk ? risk.framinghamScore ?? "-" : "-"}</td>
+        <td>${risk ? risk.framinghamLevel ?? "-" : "-"}</td>
+        <td>${risk ? risk.ascvdScore ?? "-" : "-"}</td>
+        <td>${risk ? risk.ascvdLevel ?? "-" : "-"}</td>
+        <td>${nutritionResult ? nutritionResult.bmi ?? "-" : "-"}</td>
+        <td>${nutritionResult ? nutritionResult.bmiCategory ?? "-" : "-"}</td>
+      `;
+          tbody.appendChild(tr);
+        });
+
+        // Pagination controls
+        const pagination = document.getElementById("userTablePagination");
+        if (pagination) {
+          pagination.innerHTML = `
+        <button ${
+          currentPage === 1 ? "disabled" : ""
+        } id="prevUserPage" class="px-3 py-1 border rounded bg-teal-100 mx-1">Previous</button>
+        <span>Page ${currentPage} of ${Math.ceil(
+            usersData.length / pageSize
+          )}</span>
+        <button ${
+          end >= usersData.length ? "disabled" : ""
+        } id="nextUserPage" class="px-3 py-1 border rounded bg-teal-100 mx-1">Next</button>
+      `;
+          document.getElementById("prevUserPage").onclick = () => {
+            if (currentPage > 1) {
+              currentPage--;
+              renderTable(currentPage);
+            }
+          };
+          document.getElementById("nextUserPage").onclick = () => {
+            if (end < usersData.length) {
+              currentPage++;
+              renderTable(currentPage);
+            }
+          };
+        }
+      }
+
+      fetch("/api/users/full")
+        .then((res) => res.json())
+        .then((data) => {
+          const tbody = document.querySelector("#userTable tbody");
+          if (!tbody) return;
+          if (!Array.isArray(data)) {
+            tbody.innerHTML = `<tr><td colspan="12" class="text-center text-red-600">Gagal load data user: ${
+              data.error || "Unknown error"
+            }</td></tr>`;
+            return;
+          }
+          // Sort data dari terbaru ke terlama
+          usersData = data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          currentPage = 1;
+          renderTable(currentPage);
+        });
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="bg-teal-50 min-h-screen">
+    <header class="bg-white/70 backdrop-blur sticky top-0 z-10 border-b">
+      <div
+        class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <h1 class="text-2xl font-semibold text-teal-700">HealthDetect Admin</h1>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-8">
+      <!-- TABEL USER PALING ATAS -->
+      <section class="bg-white rounded-xl shadow-sm border p-6 md:col-span-2">
+        <h2 class="text-lg font-semibold text-teal-800 mb-4">
+          Daftar Seluruh User
+        </h2>
+        <div class="overflow-x-auto">
+          <table id="userTable" class="min-w-full border text-sm">
+            <thead class="bg-teal-100">
+              <tr>
+                <th class="px-2 py-1 border">No</th>
+                <th class="px-2 py-1 border">ID</th>
+                <th class="px-2 py-1 border">Nama</th>
+                <th class="px-2 py-1 border">Usia</th>
+                <th class="px-2 py-1 border">Gender</th>
+                <th class="px-2 py-1 border">Created At</th>
+                <th class="px-2 py-1 border">Framingham Score</th>
+                <th class="px-2 py-1 border">Framingham Level</th>
+                <th class="px-2 py-1 border">ASCVD Score</th>
+                <th class="px-2 py-1 border">ASCVD Level</th>
+                <th class="px-2 py-1 border">BMI</th>
+                <th class="px-2 py-1 border">BMI Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data akan diisi oleh JS -->
+            </tbody>
+          </table>
+          <div
+            id="userTablePagination"
+            class="flex items-center justify-end mt-2 gap-2"
+          ></div>
+        </div>
+      </section>
+
+      <!-- SECTION INPUT DATA -->
+      <section class="bg-white rounded-xl shadow-sm border p-6">
+        <h2 class="text-lg font-semibold text-teal-800 mb-4">Input Data</h2>
+        <form id="risk-form" class="grid grid-cols-1 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="text-sm text-gray-700">Name</span>
+              <input
+                name="name"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                placeholder="John Doe"
+              />
+            </label>
+            <label class="block">
+              <span class="text-sm text-gray-700">Age</span>
+              <input
+                name="age"
+                type="number"
+                min="18"
+                max="120"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                placeholder="40"
+              />
+            </label>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="text-sm text-gray-700">Gender</span>
+              <select
+                name="gender"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="text-sm text-gray-700">Race (optional)</span>
+              <input
+                name="race"
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                placeholder="e.g. asian"
+              />
+            </label>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="text-sm text-gray-700"
+                >Total Cholesterol (mg/dL)</span
+              >
+              <input
+                name="totalCholesterol"
+                type="number"
+                step="0.1"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                placeholder="200"
+              />
+            </label>
+            <label class="block">
+              <span class="text-sm text-gray-700">HDL Cholesterol (mg/dL)</span>
+              <input
+                name="hdlCholesterol"
+                type="number"
+                step="0.1"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                placeholder="50"
+              />
+            </label>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="text-sm text-gray-700">Systolic BP (mmHg)</span>
+              <input
+                name="systolicBP"
+                type="number"
+                step="0.1"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                placeholder="120"
+              />
+            </label>
+            <div class="grid grid-cols-2 gap-4">
+              <label class="flex items-center gap-2 mt-6">
+                <input
+                  name="isSmoker"
+                  type="checkbox"
+                  class="rounded text-teal-600 focus:ring-teal-500"
+                />
+                <span class="text-sm text-gray-700">Smoker</span>
+              </label>
+              <label class="flex items-center gap-2 mt-6">
+                <input
+                  name="isDiabetic"
+                  type="checkbox"
+                  class="rounded text-teal-600 focus:ring-teal-500"
+                />
+                <span class="text-sm text-gray-700">Diabetic</span>
+              </label>
+            </div>
+          </div>
+
+          <label class="block">
+            <span class="text-sm text-gray-700"
+              >Resting Heart Rates (comma separated)</span
+            >
+            <input
+              name="restingHeartRates"
+              class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+              placeholder="72, 75, 78"
+            />
+          </label>
+
+          <button
+            type="submit"
+            class="mt-2 inline-flex items-center justify-center rounded-lg bg-teal-600 text-white font-medium px-4 py-2 hover:bg-teal-700 focus:ring-4 focus:ring-teal-300"
+          >
+            Calculate
+          </button>
+          <p id="error" class="hidden text-sm text-red-600"></p>
+        </form>
+      </section>
+
+      <!-- SECTION RESULTS -->
+      <section class="bg-white rounded-xl shadow-sm border p-6">
+        <h2 class="text-lg font-semibold text-teal-800 mb-4">Results</h2>
+        <div id="results" class="space-y-4">
+          <div class="text-gray-500">Fill the form and click Calculate.</div>
+        </div>
+      </section>
+
+      <!-- SECTION NUTRITION -->
+      <section class="bg-white rounded-xl shadow-sm border p-6 md:col-span-2">
+        <h2 class="text-lg font-semibold text-teal-800 mb-4">Nutrition</h2>
+        <form id="nutrition-form" class="grid grid-cols-1 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <label class="block">
+              <span class="text-sm text-gray-700">Weight (kg)</span>
+              <input
+                name="weight"
+                type="number"
+                step="0.1"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                placeholder="70"
+              />
+            </label>
+            <label class="block">
+              <span class="text-sm text-gray-700">Height (cm)</span>
+              <input
+                name="height"
+                type="number"
+                step="0.1"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                placeholder="170"
+              />
+            </label>
+            <label class="block">
+              <span class="text-sm text-gray-700">Activity Level</span>
+              <select
+                name="activityLevel"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+              >
+                <option value="bedrest">Bedrest</option>
+                <option value="ringan">Ringan</option>
+                <option value="sedang" selected>Sedang</option>
+                <option value="berat">Berat</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="text-sm text-gray-700">Stress Level</span>
+              <select
+                name="stressLevel"
+                required
+                class="mt-1 w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+              >
+                <option value="ringan">Ringan</option>
+                <option value="sedang" selected>Sedang</option>
+                <option value="berat">Berat</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="flex gap-3 items-center">
+            <button
+              type="submit"
+              class="inline-flex items-center justify-center rounded-lg bg-teal-600 text-white font-medium px-4 py-2 hover:bg-teal-700 focus:ring-4 focus:ring-teal-300"
+            >
+              Calculate Nutrition
+            </button>
+            <p id="nutrition-error" class="hidden text-sm text-red-600"></p>
+          </div>
+        </form>
+
+        <div id="nutrition-results" class="mt-4 grid md:grid-cols-3 gap-4">
+          <div class="text-gray-500 md:col-span-3">
+            Fill the nutrition form and click Calculate.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION UPLOAD SPREADSHEET -->
+      <section
+        class="bg-white rounded-xl shadow-sm border p-6 md:col-span-2 mb-6"
+      >
+        <h2 class="text-lg font-semibold text-teal-800 mb-4">
+          Upload Spreadsheet User
+        </h2>
+        <form id="upload-form" enctype="multipart/form-data">
+          <input
+            type="file"
+            name="file"
+            accept=".csv,.xlsx"
+            required
+            class="mb-2"
+          />
+          <button
+            type="submit"
+            class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700"
+          >
+            Upload
+          </button>
+          <span id="upload-status" class="ml-4 text-sm"></span>
+        </form>
+      </section>
+    </main>
+
+    <footer
+      class="max-w-6xl mx-auto px-4 pb-10 text-center text-xs text-gray-500"
+    >
+      Built with ❤️ by MGM
+    </footer>
+
+    <script type="module" src="/js/main.js" defer></script>
+  </body>
+</html>

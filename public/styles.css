@@ -1,0 +1,14 @@
+/* Global styles extracted from inline <style> */
+body {
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* Optional helpers for subtle UI tweaks */
+.card {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  background-color: #ffffff;
+}
+
+

@@ -17,6 +17,8 @@ module.exports = (sequelize) => {
         as: 'riskAssessments',
         onDelete: 'CASCADE',
       });
+
+      User.hasMany(models.NutritionData, { as: 'nutritionData', foreignKey: 'userId' });
     }
   }
 
