@@ -222,11 +222,35 @@ const uploadSpreadsheet = async (req, res) => {
         const usia = row[userColumnMap['Usia (tahun)']];
         const jenisKelamin = row[userColumnMap['Jenis Kelamin']];
         
-        // Get nutrition data
-        const weight = row[userColumnMap['Berat Badan'] || userColumnMap['BB'] || userColumnMap['Weight']];
-        const height = row[userColumnMap['Tinggi Badan'] || userColumnMap['TB'] || userColumnMap['Height']];
-        const activityLevel = row[userColumnMap['Aktivitas'] || userColumnMap['Activity Level']] || 'ringan';
-        const stressLevel = row[userColumnMap['Stress'] || userColumnMap['Stress Level']] || 'ringan';
+        // Get nutrition data (look in both user and health sections)
+        const weight = row[
+          userColumnMap['Berat Badan (kg)'] ??
+          userColumnMap['Berat Badan'] ??
+          userColumnMap['BB'] ??
+          userColumnMap['Weight'] ??
+          healthColumnMap['Berat Badan (kg)'] ??
+          healthColumnMap['Berat Badan']
+        ];
+        const height = row[
+          userColumnMap['Tinggi Badan (cm)'] ??
+          userColumnMap['Tinggi Badan (m)'] ??
+          userColumnMap['Tinggi Badan'] ??
+          userColumnMap['TB'] ??
+          userColumnMap['Height'] ??
+          healthColumnMap['Tinggi Badan (cm)'] ??
+          healthColumnMap['Tinggi Badan (m)'] ??
+          healthColumnMap['Tinggi Badan']
+        ];
+        const activityLevel = row[
+          userColumnMap['Level Aktivitas'] ??
+          userColumnMap['Aktivitas'] ??
+          userColumnMap['Activity Level']
+        ] || 'ringan';
+        const stressLevel = row[
+          userColumnMap['Level Stress'] ??
+          userColumnMap['Stress'] ??
+          userColumnMap['Stress Level']
+        ] || 'ringan';
         
         // Skip if no name or age
         if (!nama || !usia) {
@@ -257,9 +281,21 @@ const uploadSpreadsheet = async (req, res) => {
           continue;
         }
 
-        // Parse weight and height
-        let weightValue = parseFloat(weight);
-        let heightValue = parseFloat(height);
+        // Parse weight and height (accept values like "65,5" or "170 cm")
+        const toNumber = (val) => {
+          if (val === undefined || val === null) return undefined;
+          const text = val.toString().replace(/,/g, '.');
+          const cleaned = text.match(/[0-9.]+/g)?.join('');
+          const num = parseFloat(cleaned);
+          return Number.isFinite(num) ? num : undefined;
+        };
+
+        let weightValue = toNumber(weight);
+        let heightValue = toNumber(height);
+        // Convert meters to centimeters if height seems to be in meters
+        if (heightValue && heightValue > 0 && heightValue < 3.5) {
+          heightValue = heightValue * 100;
+        }
         
         console.log(`🔢 Parsed values for ${nama}:`, { 
           weightValue,
@@ -352,29 +388,48 @@ const uploadSpreadsheet = async (req, res) => {
         healthDataInput.race = ras.toString().trim();
       }
 
-      // Will handle nutrition data parsing later                // Prepare nutrition data
+        // Prepare nutrition data
         const nutritionInput = {};
         
         // Parse weight
-        const beratBadan = row[userColumnMap['Berat Badan (kg)']];
-        if (beratBadan && beratBadan.toString().trim() !== '') {
-          const weight = parseFloat(beratBadan.toString().replace(',', '.'));
-          if (!isNaN(weight) && weight > 0) {
-            nutritionInput.weight = weight;
-          }
+        const beratBadan = row[
+          userColumnMap['Berat Badan (kg)'] ??
+          userColumnMap['Berat Badan'] ??
+          userColumnMap['BB'] ??
+          userColumnMap['Weight'] ??
+          healthColumnMap['Berat Badan (kg)'] ??
+          healthColumnMap['Berat Badan']
+        ];
+        const parsedWeight = toNumber(beratBadan ?? weightValue);
+        if (parsedWeight && parsedWeight > 0) {
+          nutritionInput.weight = parsedWeight;
         }
 
         // Parse height
-        const tinggiBadan = row[userColumnMap['Tinggi Badan (cm)']];
-        if (tinggiBadan && tinggiBadan.toString().trim() !== '') {
-          const height = parseFloat(tinggiBadan.toString().replace(',', '.'));
-          if (!isNaN(height) && height > 0) {
-            nutritionInput.height = height;
-          }
+        const tinggiBadan = row[
+          userColumnMap['Tinggi Badan (cm)'] ??
+          userColumnMap['Tinggi Badan (m)'] ??
+          userColumnMap['Tinggi Badan'] ??
+          userColumnMap['TB'] ??
+          userColumnMap['Height'] ??
+          healthColumnMap['Tinggi Badan (cm)'] ??
+          healthColumnMap['Tinggi Badan (m)'] ??
+          healthColumnMap['Tinggi Badan']
+        ];
+        let parsedHeight = toNumber(tinggiBadan ?? heightValue);
+        if (parsedHeight && parsedHeight > 0 && parsedHeight < 3.5) {
+          parsedHeight = parsedHeight * 100; // meters -> centimeters
+        }
+        if (parsedHeight && parsedHeight > 0) {
+          nutritionInput.height = parsedHeight;
         }
 
         // Parse activity level
-        const levelAktivitas = row[userColumnMap['Level Aktivitas']];
+        const levelAktivitas = row[
+          userColumnMap['Level Aktivitas'] ??
+          userColumnMap['Aktivitas'] ??
+          userColumnMap['Activity Level']
+        ];
         if (levelAktivitas && levelAktivitas.toString().trim() !== '') {
           const activityText = levelAktivitas.toString().toLowerCase().trim();
           if (['bedrest', 'ringan', 'sedang', 'berat'].includes(activityText)) {
@@ -383,7 +438,11 @@ const uploadSpreadsheet = async (req, res) => {
         }
 
         // Parse stress level
-        const levelStress = row[userColumnMap['Level Stress']];
+        const levelStress = row[
+          userColumnMap['Level Stress'] ??
+          userColumnMap['Stress'] ??
+          userColumnMap['Stress Level']
+        ];
         if (levelStress && levelStress.toString().trim() !== '') {
           const stressText = levelStress.toString().toLowerCase().trim();
           if (['ringan', 'sedang', 'berat'].includes(stressText)) {
@@ -405,6 +464,67 @@ const uploadSpreadsheet = async (req, res) => {
             await autoCalculateRiskAssessments(user, healthData, nutritionInput);
           } catch (healthErr) {
             console.error(`❌ Failed to create health data for ${userData.name}:`, healthErr.message);
+            ignored++;
+            continue;
+          }
+        } else if (nutritionInput.weight || nutritionInput.height || nutritionInput.activityLevel || nutritionInput.stressLevel) {
+          // No health data, but we have nutrition data → create/update nutrition only
+          try {
+            let nutritionData = await NutritionData.findOne({
+              where: { userId: user.id },
+              order: [['createdAt', 'DESC']]
+            });
+            if (!nutritionData) {
+              nutritionData = await NutritionData.create({
+                userId: user.id,
+                name: user.name,
+                age: user.age,
+                gender: user.gender,
+                weight: nutritionInput.weight,
+                height: nutritionInput.height,
+                activityLevel: nutritionInput.activityLevel || 'ringan',
+                stressLevel: nutritionInput.stressLevel || 'ringan'
+              });
+            } else {
+              await nutritionData.update({
+                weight: nutritionInput.weight ?? nutritionData.weight,
+                height: nutritionInput.height ?? nutritionData.height,
+                activityLevel: nutritionInput.activityLevel ?? nutritionData.activityLevel,
+                stressLevel: nutritionInput.stressLevel ?? nutritionData.stressLevel
+              });
+            }
+
+            if (nutritionInput.weight && nutritionInput.height) {
+              const nutritionResults = calculateNutrition({
+                name: user.name,
+                age: user.age,
+                gender: user.gender,
+                weight: nutritionInput.weight,
+                height: nutritionInput.height,
+                activityLevel: nutritionInput.activityLevel || 'ringan',
+                stressLevel: nutritionInput.stressLevel || 'ringan'
+              });
+
+              await NutritionResult.create({
+                nutritionDataId: nutritionData.id,
+                bmi: nutritionResults.bmi,
+                bmiCategory: nutritionResults.bmiCategory,
+                idealWeight: nutritionResults.idealWeight,
+                bmr: nutritionResults.bmr,
+                tee: nutritionResults.tee,
+                proteinGram: nutritionResults.proteinGram,
+                proteinKcal: nutritionResults.proteinKcal,
+                proteinPercent: nutritionResults.proteinPercent,
+                fatGram: nutritionResults.fatGram,
+                fatKcal: nutritionResults.fatKcal,
+                fatPercent: nutritionResults.fatPercent,
+                carbGram: nutritionResults.carbGram,
+                carbKcal: nutritionResults.carbKcal,
+                carbPercent: nutritionResults.carbPercent
+              });
+            }
+          } catch (nutritionErr) {
+            console.error(`❌ Failed to create nutrition data for ${userData.name}:`, nutritionErr.message);
             ignored++;
             continue;
           }
