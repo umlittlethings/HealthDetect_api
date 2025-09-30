@@ -1,6 +1,7 @@
 const { User, RiskAssessment, NutritionData, NutritionResult, HealthData, sequelize } = require('../../models');
 const { calculateRiskScores } = require('../services/riskService');
 const { calculateNutrition } = require('../services/nutritionService');
+const { Op } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx');
@@ -550,4 +551,62 @@ const uploadSpreadsheet = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, getAllUsersFull, uploadSpreadsheet };
+const searchUsers = async (req, res) => {
+  try {
+    const { query } = req.query;
+    if (!query) {
+      return res.status(400).json({ error: 'Search query is required' });
+    }
+
+    // Check if query looks like a UUID (contains hyphens and is 36 characters)
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(query);
+    
+    let whereCondition;
+    
+    if (isUUID) {
+      // If it's a UUID, search by exact ID match
+      whereCondition = {
+        id: query
+      };
+    } else {
+      // If it's not a UUID, search by name only (case-insensitive)
+      whereCondition = {
+        name: { [Op.iLike]: `%${query}%` }
+      };
+    }
+
+    const users = await User.findAll({
+      where: whereCondition,
+      include: [
+        {
+          model: RiskAssessment,
+          as: 'riskAssessments',
+          order: [['assessmentDate', 'DESC']],
+          limit: 1
+        },
+        {
+          model: NutritionData,
+          as: 'nutritionData',
+          include: [
+            {
+              model: NutritionResult,
+              as: 'result'
+            }
+          ]
+        },
+        {
+          model: HealthData,
+          as: 'healthData',
+          order: [['createdAt', 'DESC']]
+        }
+      ]
+    });
+
+    res.json(users);
+  } catch (err) {
+    console.error('Search error:', err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { searchUsers, getAllUsers, getAllUsersFull, uploadSpreadsheet };
